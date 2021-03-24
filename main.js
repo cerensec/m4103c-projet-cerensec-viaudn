@@ -1,7 +1,11 @@
-var search = $("#input").val();
 
-var url ="https://api.lyrics.ovh/v1/";
+function test(){
+    
+    var search = $("#input").val();
 
-const apiRes = url+search;
+    var url ="https://api.lyrics.ovh/v1/";
 
-console.log(apiRes);
+    const apiRes = url+search;
+
+    console.log(apiRes);
+}
