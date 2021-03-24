@@ -7,5 +7,7 @@ function test(){
 
     const apiRes = url+search;
 
-    console.log(apiRes);
+    fetch(apiRes)
+        .then((data)=> data.json())
+        .then((lyrics) => console.log(lyrics))
 }
