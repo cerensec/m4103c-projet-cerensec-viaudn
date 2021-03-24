@@ -9,5 +9,5 @@ function test(){
 
     fetch(apiRes)
         .then((data)=> data.json())
-        .then((lyrics) => console.log(lyrics))
+        .then((data) => console.log(data))
 }
