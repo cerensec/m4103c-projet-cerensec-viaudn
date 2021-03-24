@@ -1,7 +1,7 @@
 
 function test(){
-    
-    var search = $("#input").val();
+
+    var search = document.getElementById("input").value;
 
     var url ="https://api.lyrics.ovh/v1/";
 
