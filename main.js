@@ -5,20 +5,6 @@ function init(){
     let ul = document.getElementById("liste-favoris");
     for(i = 1; i<monLocalStorage.length+1; i++){
         createFavorite(monLocalStorage.getItem("fav"+i));
-        // let li = document.createElement("li");
-        // let span = document.createElement("span");
-        // let img = document.createElement("img");
-        // span.innerHTML = monLocalStorage.getItem("fav"+i);
-        // span.setAttribute("onclick","searchFav(this)");
-        // img.setAttribute("src", "images/croix.svg");
-        // img.setAttribute("width", 15);
-        // img.setAttribute("title", "cliquer pour supprimer le favori");
-        // img.setAttribute("onclick", "deleteFav(this)");
-        // img.setAttribute("id", span.innerHTML);
-        // li.appendChild(span);
-        // li.appendChild(img);
-        // ul.appendChild(li);
-        // console.log(monLocalStorage.getItem("fav"+i));
     }
 }
 
@@ -116,6 +102,11 @@ function searchFav(elmt){
 
 function deleteFav(elmt){
     console.log(elmt.id);
+    // for(i =1;i<monLocalStorage.length+1;i++){
+    //     if(monLocalStorage.getItem("fav"+i) == elmt.id){
+    //         monLocalStorage.removeItem("fav"+i);
+    //     }
+    // }
 
 }
 
