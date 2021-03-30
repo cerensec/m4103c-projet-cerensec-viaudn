@@ -1,8 +1,24 @@
+monLocalStorage = localStorage;
 var longeur = 0;
-async function test(){
+async function setLyrics(){
 
     reinitHTML(longeur);
-    var search = document.getElementById("input").value;
+    var search = document.getElementById("input-recherche").value;
+    //Bouton favori 
+    if(search != ""){
+        $("#btn-favoris").attr("src", "images/images/etoile-vide.svg");
+        $("#btn-favoris").attr("disabled", false);
+        $("#btn-favoris").css("background-color", "rgb(26, 188, 156)");
+    }
+    if(estDansLS(search) == true){
+        $("#img-etoile").attr("src", "images/etoile-pleine.svg");
+        console.log("yes")
+    }else if(estDansLS(search) == false){
+        $("#img-etoile").attr("src", "images/etoile-vide.svg");
+    }
+    console.log(monLocalStorage.length);
+
+    console.log(estDansLS(search));
 
     var url ="https://api.lyrics.ovh/v1/";
 
@@ -19,7 +35,6 @@ async function test(){
     }
     affichage(lyricsSP);
     console.log(lyricsSP);
-    
 }
 
 async function getLyrics(search){
@@ -43,4 +58,21 @@ function reinitHTML(num){
     for (let i = 0; i < num; i++) {
         $(".lyrics").remove();
     }
+}
+
+function addFavourite(){
+    var i = monLocalStorage.length+1;
+    monLocalStorage.setItem('fav'+i,$("#input-recherche").val());
+
+}
+
+function estDansLS(recherche){
+    var bool = false;
+    for (let i = 1; i < monLocalStorage.length; i++) {
+        var local = monLocalStorage.getItem("fav"+i);
+        if(local == recherche){
+            bool = true;
+        }
+    }
+    return bool;
 }

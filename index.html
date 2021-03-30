@@ -20,19 +20,19 @@
 			<section id="section-recherche">
 				<div id="bloc-recherche">
 					<!-- Champ de recherche -->
-					<input type="text" id="input" placeholder="Que cherchez-vous ?" />
+					<input type="text" id="input-recherche" placeholder="Que cherchez-vous ?" />
 
 					<!-- Boutons -->
 					<button id="btn-lancer-recherche" type="button"
-					class="btn_clicable" title="Lancer la recherche" onclick="test()">
+					class="btn_clicable" title="Lancer la recherche" onclick="setLyrics()">
 						<!-- Icone provenant de flaticon.com -->
 						<img src="images/loupe.svg" alt="Loupe pour recherche" width=22 >
 					</button>
 
-					<button id="btn-favoris" type="button" disabled
-					title="Ajouter la recherche aux favoris">
+					<button id="btn-favoris" type="button" disabled	
+					title="Ajouter la recherche aux favoris" onclick="addFavourite()">
 						<!-- Icone étoile vide => Recherche pas en favoris -->
-						<img src="images/etoile-vide.svg" alt="Etoile vide" width=22 >
+						<img id="img-etoile" src="images/etoile-vide.svg" alt="Etoile vide" width=22 >
 
 						<!-- Icone étoile pleine => Recherche en favoris -->
 						<!-- <img src="images/etoile-pleine.svg" alt="Etoile pleine" width=22 > -->
