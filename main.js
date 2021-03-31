@@ -2,19 +2,17 @@ monLocalStorage = localStorage;
 var longeur = 0;
 
 function init(){
-    let ul = document.getElementById("liste-favoris");
-    for(i = 1; i<monLocalStorage.length+1; i++){
-        createFavorite(monLocalStorage.getItem("fav"+i));
-    }
+    displayFav();
 }
 
 async function setLyrics(){
 
-    reinitHTML(longeur);
+    //reinitHTML(longeur);
+    $("#bloc-resultats").empty();
     var search = document.getElementById("input-recherche").value;
 
     
-    
+
     //Bouton favori 
     if(search != ""){
         $("#btn-favoris").attr("src", "images/images/etoile-vide.svg");
@@ -37,14 +35,16 @@ async function setLyrics(){
 
     var json_lyrics = await getLyrics(apiRes);
     //console.log(json_lyrics);
-    var lyrics = JSON.stringify(json_lyrics);
-    var lyricsSP;
+    // var lyrics = JSON.stringify(json_lyrics);
+    // var lyricsSP;
 
-    lyrics = lyrics.split("\\r\\n");
-    for (let i = 0; i < lyrics.length; i++) {
-        lyricsSP = lyrics[i].split("\\n");       
-    }
-    affichage(lyricsSP);
+    // lyrics = lyrics.split("\\r\\n");
+    // for (let i = 0; i < lyrics.length; i++) {
+    //     lyricsSP = lyrics[i].split("\\n");       
+    // }
+    str = json_lyrics.lyrics.replace(new RegExp('\r?\n','g'), '<br />');
+    affichage(str);
+    
     //console.log(lyricsSP);
 }
 
@@ -58,11 +58,13 @@ async function getLyrics(search){
     }
 }
 
-function affichage(array){
-    longeur = array.length;
-    for (let i = 0; i < array.length; i++) {
-        $("#bloc-resultats").append($(document.createElement('p')).attr('class',"lyrics").text(array[i]));  
-    }
+function affichage(str){
+    // longeur = array.length;
+    // for (let i = 0; i < array.length; i++) {
+    //     $("#bloc-resultats").append($(document.createElement('p')).attr('class',"lyrics").text(array[i]));  
+    // }
+    $("#bloc-resultats").empty();
+    $("#bloc-resultats").append("<p>"+str+"</p>");
 }
 
 function reinitHTML(num){
@@ -72,41 +74,60 @@ function reinitHTML(num){
 }
 
 function addFavourite(){
-    let i = monLocalStorage.length+1;
-
+    $("#img-etoile").attr("src", "images/etoile-pleine.svg");
+    //let i = monLocalStorage.length+1;
     let search = document.getElementById("input-recherche").value;
-    
+    document.getElementById("favoris-vide").style.visibility = "hidden";
     if(!estDansLS(search) && (search != null)){
-        monLocalStorage.setItem('fav'+i, search);
+        if(monLocalStorage.length >0){
+            console.log("fav index");
+            let prevKey = monLocalStorage.key(monLocalStorage.length-1);
+            let index = parseInt(prevKey.split(" ")[1])+1;
+            monLocalStorage.setItem("fav "+index, search);
+        } else{
+            console.log("fav 1");
+            monLocalStorage.setItem("fav 1", search);
+        }
         createFavorite(search);
     }
+    
+    // if(!estDansLS(search) && (search != null)){
+    //     monLocalStorage.setItem("fav "+i, search);
+    //     createFavorite(search);
+    // }
 
 }
 
 function estDansLS(recherche){
-    let bool = false;
-    for (let i = 1; i < monLocalStorage.length+1; i++) {
-        let local = monLocalStorage.getItem("fav"+i);
+    for (let i = 0; i < monLocalStorage.length; i++) {
+        let key = monLocalStorage.key(i);
+        let local = monLocalStorage.getItem(key);
         if(local == recherche){
-            bool = true;
             console.log("passe");
+            return true;
         }
     }
-    return bool;
+    return false;
 }
 
 function searchFav(elmt){
     $("#input-recherche").val(elmt.innerHTML);
+    setLyrics();
     console.log(elmt.innerHTML);
 }
 
 function deleteFav(elmt){
     console.log(elmt.id);
-    // for(i =1;i<monLocalStorage.length+1;i++){
-    //     if(monLocalStorage.getItem("fav"+i) == elmt.id){
-    //         monLocalStorage.removeItem("fav"+i);
-    //     }
-    // }
+    for(i =0;i<monLocalStorage.length;i++){
+        let key = monLocalStorage.key(i);
+        if(monLocalStorage.getItem(key) == elmt.id){
+            monLocalStorage.removeItem(key);
+        }
+    }
+    if($("#input-recherche").val() == elmt.id){
+        $("#img-etoile").attr("src", "images/etoile-vide.svg");
+    }
+    displayFav();
 
 }
 
@@ -125,4 +146,22 @@ function createFavorite(res){
     li.appendChild(span);
     li.appendChild(img);
     ul.appendChild(li);
+    
+}
+
+function displayFav(){
+    $("#liste-favoris").empty();
+    if(monLocalStorage.length > 0){
+        document.getElementById("favoris-vide").style.visibility = "hidden";
+        for(i = 0; i<monLocalStorage.length; i++){
+            let key = monLocalStorage.key(i);
+            if(key!= undefined){
+                createFavorite(monLocalStorage[key]);
+            }
+        }
+    } else{
+        document.getElementById("favoris-vide").style.visibility = "visible";
+    }
+    
+
 }
